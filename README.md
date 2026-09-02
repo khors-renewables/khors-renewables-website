@@ -54,6 +54,7 @@ Lead capture is handled through a global `ConsultationModal` (`components/consul
 │   └── apple-icon.png             # iOS home screen icon
 ├── components/
 │   ├── Navbar.tsx
+│   ├── ScreenSize.tsx
 │   ├── consultation/              # Context, Button, Modal, Form
 │   └── pages/                     # Hero, WhoWeAre, Rooftop, SolarTrusted, Subsidary, Contact
 ├── public/
