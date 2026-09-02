@@ -136,8 +136,8 @@ export default function Subsidary() {
           </div>
         </div>
 
-        {/* Right column — subsidy table card (nudged 4% right) */}
-        <div className="mt-[1.5rem] flex w-full min-w-0 flex-1 items-end justify-center translate-x-[4%] md:mt-0 md:justify-start md:pb-[0.375rem] md:pl-[3rem] lg:pb-[0.625rem] lg:pl-[5rem]">
+        {/* Right column — subsidy table card (nudged 10% left) */}
+        <div className="mt-[1.5rem] flex w-full min-w-0 flex-1 items-end justify-center -translate-x-[10%] md:mt-0 md:justify-start md:pb-[0.375rem] md:pl-[3rem] lg:pb-[0.625rem] lg:pl-[5rem]">
           <div className="w-full max-w-[25rem] rounded-[0.75rem] bg-white/95 px-[1rem] py-[1rem] shadow-[0_0.5rem_1.875rem_rgba(15,26,51,0.14)] backdrop-blur-sm md:max-w-[18.75rem] lg:max-w-[20.625rem] lg:px-[1.25rem] lg:py-[1.25rem]">
             <div className="flex items-center gap-[0.5rem]">
               <Home className="h-[1.125rem] w-[1.125rem] text-navy lg:h-[1.25rem] lg:w-[1.25rem]" />
