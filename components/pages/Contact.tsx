@@ -70,7 +70,7 @@ export default function Contact() {
           </ConsultationButton>
 
           {/* Contact Information card */}
-          <div className="mt-[1.75rem] rounded-[0.875rem] border border-navy/10 bg-white/80 px-[1.25rem] py-[1.125rem] backdrop-blur-sm lg:mt-[2.125rem] lg:px-[1.5rem] lg:py-[1.375rem]">
+          <div className="mt-[1.75rem] w-fit max-w-full rounded-[0.875rem] border border-navy/10 bg-white/80 px-[1.25rem] py-[1.125rem] backdrop-blur-sm lg:mt-[2.125rem] lg:px-[1.5rem] lg:py-[1.375rem]">
             <div className="flex items-center gap-[0.75rem]">
               <span className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full bg-brand/10 lg:h-[3.125rem] lg:w-[3.125rem]">
                 <Mail className="h-[1.375rem] w-[1.375rem] text-brand lg:h-[1.625rem] lg:w-[1.625rem]" />
@@ -118,7 +118,7 @@ export default function Contact() {
           </div>
 
           {/* Business Hours card */}
-          <div className="mt-[1rem] rounded-[0.875rem] border border-navy/10 bg-white/80 px-[1.25rem] py-[1.125rem] backdrop-blur-sm lg:mt-[1.125rem] lg:px-[1.5rem] lg:py-[1.375rem]">
+          <div className="mt-[1rem] w-fit max-w-full rounded-[0.875rem] border border-navy/10 bg-white/80 px-[1.25rem] py-[1.125rem] backdrop-blur-sm lg:mt-[1.125rem] lg:px-[1.5rem] lg:py-[1.375rem]">
             <div className="flex items-center gap-[0.75rem]">
               <span className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full bg-brand/10 lg:h-[3.125rem] lg:w-[3.125rem]">
                 <Clock className="h-[1.375rem] w-[1.375rem] text-brand lg:h-[1.625rem] lg:w-[1.625rem]" />

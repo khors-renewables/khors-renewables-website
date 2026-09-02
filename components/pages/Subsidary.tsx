@@ -90,7 +90,7 @@ export default function Subsidary() {
       {/* Main content */}
       <div className="relative flex flex-1 w-full flex-col px-5 py-[1.75rem] sm:px-8 md:flex-row md:items-center md:gap-[1.875rem] lg:gap-[3.125rem] lg:px-[5rem] lg:py-[2.5rem]">
         {/* Left column */}
-        <div className="flex w-full flex-col justify-center md:max-w-[25rem] md:shrink-0 lg:max-w-[27.5rem]">
+        <div className="flex w-full flex-col justify-center md:max-[1199.98px]:w-1/2 md:max-[1199.98px]:max-w-none md:max-w-[25rem] md:shrink-0 lg:max-w-[27.5rem]">
           <h2 className="font-display text-[2.125rem] font-bold leading-[1.08] text-navy sm:text-[2.625rem] lg:text-[3.25rem]">
             Government
             <br />
@@ -138,10 +138,11 @@ export default function Subsidary() {
 
         {/*
           Right column — subsidy table card.
-          Below 1200px viewport width, shift it 10% to the right.
-          At >=1200px it stays in its natural position.
+          In the 768-1200px band, force an even 50/50 split with the left
+          column (w-1/2, no flex-grow). At >=1200px it reverts to filling
+          the remaining flex space. Below 768px it stacks under the text.
         */}
-        <div className="mt-[1.5rem] flex w-full min-w-0 flex-1 items-end justify-center [@media(max-width:1199.98px)]:translate-x-[10%] md:mt-0 md:justify-start md:pb-[0.375rem] md:pl-[3rem] lg:pb-[0.625rem] lg:pl-[5rem]">
+        <div className="mt-[1.5rem] flex w-full min-w-0 flex-1 items-end justify-center md:mt-0 md:justify-start md:pb-[0.375rem] md:pl-[3rem] md:max-[1199.98px]:w-1/2 md:max-[1199.98px]:flex-none md:max-[1199.98px]:justify-center md:max-[1199.98px]:pl-0 md:max-[1199.98px]:-translate-x-[14%] lg:pb-[0.625rem] lg:pl-[5rem]">
           <div className="w-full max-w-[25rem] rounded-[0.75rem] bg-white/95 px-[1rem] py-[1rem] shadow-[0_0.5rem_1.875rem_rgba(15,26,51,0.14)] backdrop-blur-sm md:max-w-[18.75rem] lg:max-w-[20.625rem] lg:px-[1.25rem] lg:py-[1.25rem]">
             <div className="flex items-center gap-[0.5rem]">
               <Home className="h-[1.125rem] w-[1.125rem] text-navy lg:h-[1.25rem] lg:w-[1.25rem]" />

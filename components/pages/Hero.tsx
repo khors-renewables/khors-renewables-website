@@ -46,7 +46,7 @@ export default function Hero() {
         fill
         priority
         sizes="100vw"
-        className="-z-20 object-cover object-[68%_60%] lg:object-[center_60%]"
+        className="-z-20 object-cover object-[58%_60%] lg:object-[40%_60%]"
       />
 
       {/* White wash so the copy stays legible over the photo */}

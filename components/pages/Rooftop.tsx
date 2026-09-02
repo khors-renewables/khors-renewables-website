@@ -81,20 +81,29 @@ export default function Rooftop() {
     <section id="rooftop" className="w-full">
       {/* Hero area — content left, image right */}
       <div className="relative w-full overflow-hidden bg-white lg:min-h-[27.5rem]">
+        {/* Brand logo — top right */}
+        <Image
+          src="/_archive/khors-logo.png"
+          alt="Khors Renewables"
+          width={120}
+          height={120}
+          priority
+          className="absolute right-4 top-4 z-10 h-auto w-[3.5rem] sm:right-6 sm:top-6 sm:w-[4.5rem] lg:right-8 lg:top-8 lg:w-[5.5rem]"
+        />
         <div className="flex w-full flex-col lg:flex-row">
           {/* Left content */}
           <div className="flex flex-1 flex-col justify-center px-5 py-8 sm:px-8 lg:max-w-[50%] lg:px-[6.25rem] lg:py-[2.5rem]">
-            <div className="max-w-[30rem]">
-              <h2 className="font-display text-[1.875rem] font-bold leading-[1.1] text-navy sm:text-[2.75rem] lg:text-[3.25rem]">
+            <div className="max-w-[34rem]">
+              <h2 className="font-display text-[2.25rem] font-bold leading-[1.08] text-navy sm:text-[3.25rem] lg:text-[4rem]">
                 Rooftop Solar
                 <br />
                 <span className="text-brand">Solutions</span>
               </h2>
 
               {/* Divider */}
-              <div className="mt-[0.875rem] h-[0.1875rem] w-[2.5rem] rounded-full bg-navy lg:mt-[1.125rem] lg:h-[0.25rem] lg:w-[3.125rem]" />
+              <div className="mt-[0.875rem] h-[0.1875rem] w-[2.5rem] rounded-full bg-navy lg:mt-[1.25rem] lg:h-[0.3125rem] lg:w-[3.75rem]" />
 
-              <p className="mt-[1rem] text-[0.875rem] leading-[1.5] text-navy/80 sm:text-[0.9375rem] lg:mt-[1.25rem] lg:text-[1.0625rem]">
+              <p className="mt-[1rem] text-[1rem] leading-[1.5] text-navy/80 sm:text-[1.125rem] lg:mt-[1.5rem] lg:text-[1.3125rem]">
                 Smart, Sustainable, Savings for a lifetime.
                 <br className="hidden sm:block" /> Power your home or business
                 with clean solar energy.
