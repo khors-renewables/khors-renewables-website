@@ -82,7 +82,7 @@ export default function Contact() {
               <div className="flex min-w-0 items-center gap-[0.625rem]">
                 <Mail className="h-[1rem] w-[1rem] shrink-0 text-navy/60 lg:h-[1.125rem] lg:w-[1.125rem]" />
                 <a
-                  href="mailto:info@khorsrenewables.com"
+                  href="mailto:contact@khorsrenewables.com"
                   className="min-w-0 break-all text-[0.8438rem] font-semibold text-navy transition-colors hover:text-brand sm:text-[0.875rem] lg:text-[1rem]"
                 >
                   contact@khorsrenewables.com

@@ -50,10 +50,10 @@ Lead capture is handled through a global `ConsultationModal` (`components/consul
 │   ├── globals.css                # Tailwind + theme tokens + scroll offsets
 │   ├── layout.tsx                 # Root layout, fonts, metadata, providers
 │   ├── page.tsx                   # Page composition (section order)
-│   └── favicon.ico
+│   ├── icon.png                   # Browser tab icon (Khors logo)
+│   └── apple-icon.png             # iOS home screen icon
 ├── components/
 │   ├── Navbar.tsx
-│   ├── ScreenSize.tsx
 │   ├── consultation/              # Context, Button, Modal, Form
 │   └── pages/                     # Hero, WhoWeAre, Rooftop, SolarTrusted, Subsidary, Contact
 ├── public/
@@ -101,7 +101,7 @@ Create a `.env.local` in the project root. Required for the consultation form:
 # SMTP (defaults: host=smtp.gmail.com, port=465)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
-SMTP_USER=your_email@gmail.com
+SMTP_USER=contact@khorsrenewables.com
 SMTP_PASS=your_app_password
 
 # Where consultation leads are sent
