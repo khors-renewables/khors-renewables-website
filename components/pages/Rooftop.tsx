@@ -110,18 +110,14 @@ export default function Rooftop() {
           </div>
 
           {/* Right image */}
-          <div className="relative min-h-[16.25rem] w-full lg:min-h-[27.5rem] lg:w-[50%]">
+          <div className="relative min-h-[16.25rem] w-full overflow-hidden lg:min-h-[27.5rem] lg:w-[50%]">
             <Image
               src="/rooftop/house.png"
               alt="House with rooftop solar panels"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover object-center"
+              className="scale-[1.02] object-cover object-center"
             />
-            {/* Fade edges — the horizontal fade only makes sense side-by-side */}
-            <div className="absolute inset-0 hidden bg-[linear-gradient(to_right,white_0%,transparent_20%)] lg:block" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,white_0%,transparent_15%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_top,white_0%,transparent_15%)]" />
           </div>
         </div>
       </div>

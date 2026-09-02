@@ -18,7 +18,7 @@ export default function Contact() {
         alt="Khors Renewables customer support representative"
         fill
         sizes="100vw"
-        className="-z-20 object-cover object-[center_35%]"
+        className="-z-20 object-cover object-[center_36%]"
         priority
       />
 
