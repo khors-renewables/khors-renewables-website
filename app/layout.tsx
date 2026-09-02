@@ -3,6 +3,7 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ConsultationProvider } from "@/components/consultation/ConsultationContext";
 import ConsultationModal from "@/components/consultation/ConsultationModal";
+import PageLoader from "@/components/PageLoader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <body className="antialiased">
+        <PageLoader />
         <ConsultationProvider>
           {children}
           <ConsultationModal />
