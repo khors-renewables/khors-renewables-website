@@ -22,6 +22,7 @@ export default function ConsultationModal() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(false);
+  const [errorReason, setErrorReason] = useState<string | null>(null);
 
   // Lock body scroll while open and allow Escape to close.
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function ConsultationModal() {
     e.preventDefault();
     setSubmitting(true);
     setError(false);
+    setErrorReason(null);
 
     try {
       const res = await fetch("/api/consultation", {
@@ -57,10 +59,14 @@ export default function ConsultationModal() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to submit");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.reason ?? data?.message ?? "Failed to submit");
+      }
       setSubmitted(true);
-    } catch {
+    } catch (err) {
       setError(true);
+      setErrorReason(err instanceof Error ? err.message : null);
     } finally {
       setSubmitting(false);
     }
@@ -72,6 +78,7 @@ export default function ConsultationModal() {
     setTimeout(() => {
       setSubmitted(false);
       setError(false);
+      setErrorReason(null);
       setFullName("");
       setWhatsapp("");
       setBill(null);
@@ -190,6 +197,11 @@ export default function ConsultationModal() {
             {error && (
               <p className="mt-[1rem] text-[0.875rem] font-semibold text-red-600">
                 Something went wrong. Please try again.
+                {process.env.NODE_ENV !== "production" && errorReason && (
+                  <span className="mt-[0.375rem] block break-words text-[0.75rem] font-normal text-red-500">
+                    {errorReason}
+                  </span>
+                )}
               </p>
             )}
 

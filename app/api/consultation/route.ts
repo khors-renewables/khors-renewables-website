@@ -147,8 +147,17 @@ export async function POST(request: NextRequest) {
     return Response.json({ success: true });
   } catch (error) {
     console.error("Failed to send consultation email:", error);
+
+    // Surface the SMTP reason while developing; keep it generic in production.
+    const reason =
+      process.env.NODE_ENV === "production"
+        ? undefined
+        : error instanceof Error
+          ? error.message
+          : String(error);
+
     return Response.json(
-      { success: false, message: "Failed to send email" },
+      { success: false, message: "Failed to send email", reason },
       { status: 500 }
     );
   }
