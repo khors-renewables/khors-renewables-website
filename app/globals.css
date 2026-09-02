@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-montserrat), system-ui, -apple-system, sans-serif;
+
+  /* Brand palette sampled from the reference design */
+  --color-navy: #1a2b5e;
+  --color-brand: #14783c;
+  --color-brand-leaf: #43a63c;
+  --color-brand-btn: #2e6b34;
+  --color-brand-btn-hover: #245529;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Fluid root: holds a 16px baseline, scales gently on very wide screens so
+     zooming out keeps type proportional to the full-bleed images. */
+  font-size: clamp(16px, 1vw, 30px);
+  scroll-behavior: smooth;
+}
+
+/* Anchor targets sit under the sticky navbar, so offset each jump by the
+   navbar height. Keeps the section's own top flush below the bar instead of
+   hidden behind it. Values mirror the navbar: 4.75rem, 5.75rem at lg. */
+section[id] {
+  scroll-margin-top: 4.75rem;
+}
+
+@media (min-width: 64rem) {
+  section[id] {
+    scroll-margin-top: 5.75rem;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--color-navy);
+  background: #ffffff;
+  /* Scale the whole layout uniformly. `zoom` scales the rendered layout,
+     which font-size alone can't because most sizes are rem literals. */
+  zoom: 0.955;
+}
