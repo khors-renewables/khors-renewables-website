@@ -9,15 +9,29 @@ import { useEffect, useState } from "react";
  * (so hero images are ready) with a small minimum display time so it doesn't
  * flash on fast loads. Unmounts after the fade so it never blocks clicks.
  */
+const SESSION_KEY = "khors:loaderShown";
+
 export default function PageLoader() {
+  // Server and first client render always agree (overlay visible) to avoid a
+  // hydration mismatch. An effect below removes it instantly if it already ran
+  // this browser session — which is what silences the dev hot-reload re-flash,
+  // since each save remounts the component but sessionStorage persists.
   const [hidden, setHidden] = useState(false);
   const [removed, setRemoved] = useState(false);
 
   useEffect(() => {
+    // Already shown this session (hot-reload, client nav, back/forward): skip
+    // the animation entirely and unmount on the next tick.
+    if (window.sessionStorage.getItem(SESSION_KEY) === "1") {
+      setRemoved(true);
+      return;
+    }
+
     const mountedAt = Date.now();
     const MIN_MS = 600;
 
     const finish = () => {
+      window.sessionStorage.setItem(SESSION_KEY, "1");
       const elapsed = Date.now() - mountedAt;
       const wait = Math.max(0, MIN_MS - elapsed);
       window.setTimeout(() => setHidden(true), wait);
