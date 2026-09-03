@@ -119,7 +119,7 @@ export default function SolarTrusted() {
           {/* Humans image — right side, behind cards, visible above/below them */}
           <div className="pointer-events-none absolute bottom-[0.625rem] right-[3.75rem] hidden h-[22.5rem] w-[25rem] min-[1815px]:block lg:bottom-[-5.625rem] lg:right-[-5rem] lg:h-[27.5rem] lg:w-[31.25rem]" style={{ zIndex: 2 }}>
             <Image
-              src="/solar-trusted/team5.png"
+              src="/solar-trusted/teams4.png"
               alt="Khors Renewables team members"
               fill
               sizes="440px"

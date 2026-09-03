@@ -14,7 +14,7 @@ export default function Contact() {
     <section id="contact" className="relative isolate w-full flex flex-col overflow-hidden lg:min-h-[calc(100svh_-_5.75rem)]">
       {/* Background image */}
       <Image
-        src="/contact/background2.png"
+        src="/contact/background3.png"
         alt="Khors Renewables customer support representative"
         fill
         sizes="100vw"
