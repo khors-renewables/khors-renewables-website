@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import nodemailer from "nodemailer";
+import { getCampaign } from "@/lib/campaigns";
 
 export const runtime = "nodejs";
 
@@ -8,22 +9,47 @@ type ConsultationPayload = {
   whatsapp?: string;
   bill?: string;
   pincode?: string;
+  /** Landing page only: Residential | Commercial. */
+  propertyType?: string;
+  /** Landing page only: campaign slug, e.g. "google". */
+  source?: string;
+  /** Landing page only: full URL, carries utm_* / gclid / fbclid. */
+  pageUrl?: string;
 };
 
-type EmailDetails = {
-  fullName: string;
-  whatsapp: string;
-  bill: string;
-  pincode: string;
-};
+type EmailRow = { label: string; value: string };
 
-function buildEmailHtml({ fullName, whatsapp, bill, pincode }: EmailDetails) {
-  const row = (label: string, value: string) => `
+const MAX_FIELD_LENGTH = 300;
+
+/** Trims, caps length and neutralises HTML so values are safe in the email. */
+function sanitize(value: string | undefined): string {
+  return (value ?? "")
+    .trim()
+    .slice(0, MAX_FIELD_LENGTH)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/** A bare number is an amount in rupees; anything else passes through as-is. */
+function formatBill(value: string): string {
+  if (!value) return "Not specified";
+  const digits = value.replace(/[,\s₹]/g, "");
+  if (/^\d+$/.test(digits)) {
+    return `\u20B9${Number(digits).toLocaleString("en-IN")} / month`;
+  }
+  return value;
+}
+
+function buildEmailHtml(rows: EmailRow[], heading: string) {
+  const row = ({ label, value }: EmailRow) => `
     <tr>
       <td style="padding:14px 0;border-bottom:1px solid #e8ecf4">
         <span style="color:#8a94a8;font-size:13px;letter-spacing:.5px;text-transform:uppercase;font-weight:600">${label}</span>
       </td>
-      <td style="padding:14px 16px;border-bottom:1px solid #e8ecf4;text-align:right;color:#1a2b5e;font-size:15px;font-weight:700">${value}</td>
+      <td style="padding:14px 16px;border-bottom:1px solid #e8ecf4;text-align:right;color:#1a2b5e;font-size:15px;font-weight:700;word-break:break-word">${value}</td>
     </tr>`;
 
   return `
@@ -38,7 +64,7 @@ function buildEmailHtml({ fullName, whatsapp, bill, pincode }: EmailDetails) {
               <tr>
                 <td style="background:linear-gradient(135deg,#12308a 0%,#0b1638 100%);padding:32px 36px;text-align:center">
                   <div style="font-size:14px;letter-spacing:4px;text-transform:uppercase;color:#43a63c;font-weight:700;margin-bottom:8px">New Lead Received</div>
-                  <div style="font-size:26px;font-weight:800;color:#ffffff;line-height:1.2">Free Consultation Request</div>
+                  <div style="font-size:26px;font-weight:800;color:#ffffff;line-height:1.2">${heading}</div>
                 </td>
               </tr>
 
@@ -50,10 +76,7 @@ function buildEmailHtml({ fullName, whatsapp, bill, pincode }: EmailDetails) {
                   </p>
 
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;border-collapse:collapse">
-                    ${row("Full Name", fullName)}
-                    ${row("WhatsApp Number", whatsapp)}
-                    ${row("Monthly Bill", bill)}
-                    ${row("PIN Code", pincode)}
+                    ${rows.map(row).join("")}
                   </table>
 
                   <p style="margin:24px 0 0;font-size:13px;color:#8a94a8;line-height:1.6">
@@ -87,7 +110,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const { fullName, whatsapp, bill, pincode } = body;
+  const { fullName, whatsapp, bill, pincode, propertyType, source, pageUrl } =
+    body;
 
   if (!fullName || !whatsapp || !pincode) {
     return Response.json(
@@ -95,6 +119,10 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  // The campaign is resolved from the trusted registry, never from client text,
+  // so a forged payload can't invent a platform.
+  const campaign = getCampaign(source);
 
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
@@ -109,21 +137,59 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Subjects are a mail header: keep it on one line.
+  const subjectName =
+    fullName.replace(/[\r\n]+/g, " ").trim().slice(0, 80) || "New lead";
+
+  const rows: EmailRow[] = [
+    { label: "Full Name", value: sanitize(fullName) },
+    { label: "WhatsApp Number", value: sanitize(whatsapp) },
+  ];
+
+  if (propertyType) {
+    rows.push({ label: "Property Type", value: sanitize(propertyType) });
+  }
+
+  rows.push(
+    { label: "Monthly Bill", value: formatBill(sanitize(bill)) },
+    { label: "PIN Code", value: sanitize(pincode) }
+  );
+
+  if (campaign) {
+    rows.push(
+      { label: "Lead Source", value: campaign.platform },
+      { label: "Tracking Code", value: campaign.code }
+    );
+    if (pageUrl) {
+      rows.push({ label: "Landing Page", value: sanitize(pageUrl) });
+    }
+  } else {
+    rows.push({ label: "Lead Source", value: "Website (main site form)" });
+  }
+
   const text = [
-    "New FREE consultation request",
+    campaign
+      ? `New consultation request from ${campaign.platform} (${campaign.code})`
+      : "New FREE consultation request",
     "",
-    `Full Name: ${fullName}`,
-    `WhatsApp Number: ${whatsapp}`,
-    `Monthly Electricity Bill: ${bill ?? "Not specified"}`,
-    `PIN Code: ${pincode}`,
+    // Strip the HTML escaping back out for the plain-text part.
+    ...rows.map(
+      ({ label, value }) =>
+        `${label}: ${value
+          .replace(/&#39;/g, "'")
+          .replace(/&quot;/g, '"')
+          .replace(/&gt;/g, ">")
+          .replace(/&lt;/g, "<")
+          .replace(/&amp;/g, "&")}`
+    ),
   ].join("\n");
 
-  const html = buildEmailHtml({
-    fullName: fullName ?? "",
-    whatsapp: whatsapp ?? "",
-    bill: bill ?? "Not specified",
-    pincode: pincode ?? "",
-  });
+  const html = buildEmailHtml(
+    rows,
+    campaign
+      ? `${campaign.platform} — Consultation Request`
+      : "Free Consultation Request"
+  );
 
   const transporter = nodemailer.createTransport({
     host: smtpHost,
@@ -139,7 +205,9 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: `Consultation <${smtpUser}>`,
       to: recipientEmail,
-      subject: `New Free Consultation Request — ${fullName}`,
+      subject: campaign
+        ? `New Lead (${campaign.platform}) — ${subjectName}`
+        : `New Free Consultation Request — ${subjectName}`,
       text,
       html,
     });

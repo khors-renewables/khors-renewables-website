@@ -33,6 +33,15 @@ section[id] {
   }
 }
 
+:root {
+  /* The whole layout is uniformly scaled by this factor (applied as `zoom` on
+     body). Because `zoom` also scales viewport units, anything that must span
+     the real viewport height has to divide by it — e.g.
+     `height: calc(100dvh / var(--body-zoom))`. Without that, a `100dvh` element
+     renders at only 95.5% of the screen and leaves a gap at the bottom. */
+  --body-zoom: 0.955;
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -41,5 +50,5 @@ body {
   background: #ffffff;
   /* Scale the whole layout uniformly. `zoom` scales the rendered layout,
      which font-size alone can't because most sizes are rem literals. */
-  zoom: 0.955;
+  zoom: var(--body-zoom);
 }
