@@ -28,17 +28,35 @@ export type Campaign = {
   platform: string;
   /** Short code recorded with the lead so sales can attribute the source. */
   code: string;
+  /** Brand colour used for the source badge in the lead email. */
+  color: string;
 };
 
 export const campaigns: Record<CampaignSlug, Campaign> = {
-  google: { slug: "google", platform: "Google Ads", code: "KR-GOOGLE" },
-  facebook: { slug: "facebook", platform: "Facebook Ads", code: "KR-FACEBOOK" },
+  google: {
+    slug: "google",
+    platform: "Google Ads",
+    code: "KR-GOOGLE",
+    color: "#4285F4",
+  },
+  facebook: {
+    slug: "facebook",
+    platform: "Facebook Ads",
+    code: "KR-FACEBOOK",
+    color: "#1877F2",
+  },
   instagram: {
     slug: "instagram",
     platform: "Instagram Ads",
     code: "KR-INSTAGRAM",
+    color: "#E1306C",
   },
-  youtube: { slug: "youtube", platform: "YouTube Ads", code: "KR-YOUTUBE" },
+  youtube: {
+    slug: "youtube",
+    platform: "YouTube Ads",
+    code: "KR-YOUTUBE",
+    color: "#FF0000",
+  },
 };
 
 export function isCampaignSlug(value: string): value is CampaignSlug {

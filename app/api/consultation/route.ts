@@ -43,7 +43,14 @@ function formatBill(value: string): string {
   return value;
 }
 
-function buildEmailHtml(rows: EmailRow[], heading: string) {
+type EmailBadge = { label: string; color: string };
+
+function buildEmailHtml(
+  rows: EmailRow[],
+  heading: string,
+  badge: EmailBadge | null,
+  footerNote: string
+) {
   const row = ({ label, value }: EmailRow) => `
     <tr>
       <td style="padding:14px 0;border-bottom:1px solid #e8ecf4">
@@ -51,6 +58,14 @@ function buildEmailHtml(rows: EmailRow[], heading: string) {
       </td>
       <td style="padding:14px 16px;border-bottom:1px solid #e8ecf4;text-align:right;color:#1a2b5e;font-size:15px;font-weight:700;word-break:break-word">${value}</td>
     </tr>`;
+
+  // A coloured pill naming the platform the lead came from, so the source is
+  // obvious at a glance without reading the detail rows.
+  const badgeHtml = badge
+    ? `<div style="margin-bottom:14px">
+         <span style="display:inline-block;background:${badge.color};color:#ffffff;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:999px">${badge.label}</span>
+       </div>`
+    : "";
 
   return `
   <!DOCTYPE html>
@@ -63,6 +78,7 @@ function buildEmailHtml(rows: EmailRow[], heading: string) {
               <!-- Header -->
               <tr>
                 <td style="background:linear-gradient(135deg,#12308a 0%,#0b1638 100%);padding:32px 36px;text-align:center">
+                  ${badgeHtml}
                   <div style="font-size:14px;letter-spacing:4px;text-transform:uppercase;color:#43a63c;font-weight:700;margin-bottom:8px">New Lead Received</div>
                   <div style="font-size:26px;font-weight:800;color:#ffffff;line-height:1.2">${heading}</div>
                 </td>
@@ -88,7 +104,7 @@ function buildEmailHtml(rows: EmailRow[], heading: string) {
               <!-- Footer -->
               <tr>
                 <td style="background:#f7f9ff;padding:20px 36px;text-align:center;border-top:1px solid #e8ecf4">
-                  <span style="font-size:12px;color:#8a94a8">This email was sent from your website's consultation form.</span>
+                  <span style="font-size:12px;color:#8a94a8">${footerNote}</span>
                 </td>
               </tr>
             </table>
@@ -188,7 +204,11 @@ export async function POST(request: NextRequest) {
     rows,
     campaign
       ? `${campaign.platform} — Consultation Request`
-      : "Free Consultation Request"
+      : "Free Consultation Request",
+    campaign ? { label: campaign.platform, color: campaign.color } : null,
+    campaign
+      ? `This lead came from your ${campaign.platform} campaign link (${campaign.code}).`
+      : "This email was sent from your website's consultation form."
   );
 
   const transporter = nodemailer.createTransport({
