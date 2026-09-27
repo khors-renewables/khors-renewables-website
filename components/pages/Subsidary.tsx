@@ -41,9 +41,9 @@ const processSteps = [
 ];
 
 const subsidyTable = [
-  { size: "Up to 1 kW", amount: "₹30,000" },
-  { size: "2 kW", amount: "₹60,000" },
-  { size: "3 kW", amount: "₹78,000" },
+  { size: "Up to 1 kW", amount: "₹5,000" },
+  { size: "2 kW", amount: "₹1,000" },
+  { size: "3 kW", amount: "₹22,000" },
 ];
 
 const benefits = [
