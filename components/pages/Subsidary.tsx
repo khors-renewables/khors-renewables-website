@@ -163,9 +163,9 @@ export default function Subsidary() {
                     <Home className="h-[1rem] w-[1rem] shrink-0 text-brand lg:h-[1.125rem] lg:w-[1.125rem]" />
                     <span className="truncate text-[0.8125rem] font-bold text-navy lg:text-[0.9375rem]">{size}</span>
                   </div>
-                  <div className="flex min-w-0 flex-wrap items-baseline gap-x-[0.25rem]">
-                    <span className="text-[0.75rem] font-bold text-navy/70 lg:text-[0.8125rem]">Up to</span>
-                    <span className="text-[1.125rem] font-bold text-navy lg:text-[1.375rem]">{amount}</span>
+                  <div className="flex min-w-0 flex-col">
+                    <span className="text-[0.75rem] font-bold leading-[1.2] text-navy/70 lg:text-[0.8125rem]">Up to</span>
+                    <span className="text-[1.125rem] font-bold leading-[1.15] text-navy lg:text-[1.375rem]">{amount}</span>
                   </div>
                 </div>
               ))}
