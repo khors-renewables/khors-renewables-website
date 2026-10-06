@@ -40,10 +40,21 @@ const processSteps = [
   },
 ];
 
+// Tamil Nadu rooftop solar subsidy breakup for eligible residential
+// installations: central (PM Surya Ghar) + Tamil Nadu state = total.
+// `note` adds a second line under the capacity; `max` marks capped amounts.
 const subsidyTable = [
-  { size: "Up to 1 kW", amount: "₹5,000" },
-  { size: "2 kW", amount: "₹10,000" },
-  { size: "3 kW", amount: "₹22,000" },
+  { size: "1 kW", central: "₹30,000", state: "₹5,000", total: "₹35,000" },
+  { size: "2 kW", central: "₹60,000", state: "₹10,000", total: "₹70,000" },
+  { size: "3 kW", central: "₹78,000", state: "₹22,000", total: "₹1,00,000" },
+  {
+    size: "Above 3 kW",
+    note: "up to 10 kW",
+    central: "₹78,000",
+    state: "₹22,000",
+    total: "₹1,00,000",
+    max: true,
+  },
 ];
 
 const benefits = [
@@ -143,30 +154,55 @@ export default function Subsidary() {
           the remaining flex space. Below 768px it stacks under the text.
         */}
         <div className="mt-[1.5rem] flex w-full min-w-0 flex-1 items-end justify-center md:mt-0 md:justify-start md:pb-[0.375rem] md:pl-[3rem] md:max-[1199.98px]:w-1/2 md:max-[1199.98px]:flex-none md:max-[1199.98px]:justify-center md:max-[1199.98px]:pl-0 md:max-[1199.98px]:-translate-x-[14%] lg:pb-[0.625rem] lg:pl-[5rem]">
-          <div className="w-full max-w-[25rem] rounded-[0.75rem] bg-white/95 px-[1rem] py-[1rem] shadow-[0_0.5rem_1.875rem_rgba(15,26,51,0.14)] backdrop-blur-sm md:max-w-[18.75rem] lg:max-w-[20.625rem] lg:px-[1.25rem] lg:py-[1.25rem]">
+          <div className="w-full max-w-[28rem] rounded-[0.75rem] bg-white/95 px-[1rem] py-[1rem] shadow-[0_0.5rem_1.875rem_rgba(15,26,51,0.14)] backdrop-blur-sm md:max-w-[21rem] lg:max-w-[28rem] lg:px-[1.25rem] lg:py-[1.25rem]">
             <div className="flex items-center gap-[0.5rem]">
               <Home className="h-[1.125rem] w-[1.125rem] text-navy lg:h-[1.25rem] lg:w-[1.25rem]" />
               <h3 className="text-[0.875rem] font-bold uppercase tracking-[0.04em] text-navy lg:text-[1rem]">
                 Residential Solar Subsidy
               </h3>
             </div>
+            <p className="mt-[0.375rem] text-[0.6875rem] font-bold leading-[1.4] text-navy/70 lg:text-[0.8125rem]">
+              Tamil Nadu rooftop solar subsidy breakup for eligible residential installations.
+            </p>
 
-            {/* Table */}
-            <div className="mt-[0.875rem] overflow-hidden rounded-[0.625rem] border border-navy/10">
-              <div className="grid grid-cols-2 gap-[0.5rem] bg-navy/5 px-[0.875rem] py-[0.625rem]">
-                <span className="text-[0.75rem] font-semibold text-navy lg:text-[0.8125rem]">System Size</span>
-                <span className="text-[0.75rem] font-semibold text-navy lg:text-[0.8125rem]">Subsidy Available</span>
+            {/* Table: capacity | central | TN state | total.
+                Four compact columns sized to fit the narrowest card (~290px
+                inside a 360px phone or the 768px tablet split). */}
+            <div className="mt-[0.75rem] overflow-hidden rounded-[0.625rem] border border-navy/10">
+              <div className="grid grid-cols-[1.3fr_1fr_1fr_1.1fr] gap-x-[0.375rem] bg-navy/5 px-[0.75rem] py-[0.5625rem] lg:px-[0.875rem]">
+                <span className="text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">Capacity</span>
+                <span className="text-right text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">Central</span>
+                <span className="text-right text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">TN State</span>
+                <span className="text-right text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">Total</span>
               </div>
-              {subsidyTable.map(({ size, amount }) => (
-                <div key={size} className="grid grid-cols-2 items-center gap-[0.5rem] border-t border-navy/10 px-[0.875rem] py-[0.75rem] lg:py-[0.875rem]">
+              {subsidyTable.map(({ size, note, central, state, total, max }) => (
+                <div
+                  key={size}
+                  className="grid grid-cols-[1.3fr_1fr_1fr_1.1fr] items-center gap-x-[0.375rem] border-t border-navy/10 px-[0.75rem] py-[0.625rem] lg:px-[0.875rem] lg:py-[0.75rem]"
+                >
                   <div className="flex min-w-0 items-center gap-[0.375rem]">
-                    <Home className="h-[1rem] w-[1rem] shrink-0 text-brand lg:h-[1.125rem] lg:w-[1.125rem]" />
-                    <span className="truncate text-[0.8125rem] font-bold text-navy lg:text-[0.9375rem]">{size}</span>
+                    <Home className="hidden h-[1rem] w-[1rem] shrink-0 text-brand xl:block" />
+                    <span className="min-w-0">
+                      <span className="block text-[0.75rem] font-bold leading-[1.2] text-navy lg:text-[0.875rem]">{size}</span>
+                      {note && (
+                        <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/60 lg:text-[0.6875rem]">{note}</span>
+                      )}
+                    </span>
                   </div>
-                  <div className="flex min-w-0 flex-col">
-                    <span className="text-[0.75rem] font-bold leading-[1.2] text-navy/70 lg:text-[0.8125rem]">Up to</span>
-                    <span className="text-[1.125rem] font-bold leading-[1.15] text-navy lg:text-[1.375rem]">{amount}</span>
-                  </div>
+                  {[central, state].map((value, i) => (
+                    <span key={i} className="text-right">
+                      <span className="block text-[0.75rem] font-bold leading-[1.2] text-navy/80 lg:text-[0.875rem]">{value}</span>
+                      {max && (
+                        <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/50 lg:text-[0.6875rem]">max</span>
+                      )}
+                    </span>
+                  ))}
+                  <span className="text-right">
+                    <span className="block text-[0.8125rem] font-bold leading-[1.2] text-brand lg:text-[1rem]">{total}</span>
+                    {max && (
+                      <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/50 lg:text-[0.6875rem]">max</span>
+                    )}
+                  </span>
                 </div>
               ))}
             </div>
