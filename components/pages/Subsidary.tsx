@@ -42,19 +42,10 @@ const processSteps = [
 
 // Tamil Nadu rooftop solar subsidy breakup for eligible residential
 // installations: central (PM Surya Ghar) + Tamil Nadu state = total.
-// `note` adds a second line under the capacity; `max` marks capped amounts.
 const subsidyTable = [
   { size: "1 kW", central: "₹30,000", state: "₹5,000", total: "₹35,000" },
   { size: "2 kW", central: "₹60,000", state: "₹10,000", total: "₹70,000" },
-  { size: "3 kW", central: "₹78,000", state: "₹22,000", total: "₹1,00,000" },
-  {
-    size: "Above 3 kW",
-    note: "up to 10 kW",
-    central: "₹78,000",
-    state: "₹22,000",
-    total: "₹1,00,000",
-    max: true,
-  },
+  { size: "3 kW and above", central: "₹78,000", state: "₹22,000", total: "₹1,00,000" },
 ];
 
 const benefits = [
@@ -175,34 +166,21 @@ export default function Subsidary() {
                 <span className="text-right text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">TN State</span>
                 <span className="text-right text-[0.6875rem] font-semibold text-navy lg:text-[0.75rem]">Total</span>
               </div>
-              {subsidyTable.map(({ size, note, central, state, total, max }) => (
+              {subsidyTable.map(({ size, central, state, total }) => (
                 <div
                   key={size}
                   className="grid grid-cols-[1.3fr_1fr_1fr_1.1fr] items-center gap-x-[0.375rem] border-t border-navy/10 px-[0.75rem] py-[0.625rem] lg:px-[0.875rem] lg:py-[0.75rem]"
                 >
                   <div className="flex min-w-0 items-center gap-[0.375rem]">
                     <Home className="hidden h-[1rem] w-[1rem] shrink-0 text-brand xl:block" />
-                    <span className="min-w-0">
-                      <span className="block text-[0.75rem] font-bold leading-[1.2] text-navy lg:text-[0.875rem]">{size}</span>
-                      {note && (
-                        <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/60 lg:text-[0.6875rem]">{note}</span>
-                      )}
-                    </span>
+                    <span className="min-w-0 text-[0.75rem] font-bold leading-[1.2] text-navy lg:text-[0.875rem]">{size}</span>
                   </div>
                   {[central, state].map((value, i) => (
-                    <span key={i} className="text-right">
-                      <span className="block text-[0.75rem] font-bold leading-[1.2] text-navy/80 lg:text-[0.875rem]">{value}</span>
-                      {max && (
-                        <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/50 lg:text-[0.6875rem]">max</span>
-                      )}
+                    <span key={i} className="text-right text-[0.75rem] font-bold leading-[1.2] text-navy/80 lg:text-[0.875rem]">
+                      {value}
                     </span>
                   ))}
-                  <span className="text-right">
-                    <span className="block text-[0.8125rem] font-bold leading-[1.2] text-brand lg:text-[1rem]">{total}</span>
-                    {max && (
-                      <span className="block text-[0.625rem] font-bold leading-[1.2] text-navy/50 lg:text-[0.6875rem]">max</span>
-                    )}
-                  </span>
+                  <span className="text-right text-[0.8125rem] font-bold leading-[1.2] text-brand lg:text-[1rem]">{total}</span>
                 </div>
               ))}
             </div>
